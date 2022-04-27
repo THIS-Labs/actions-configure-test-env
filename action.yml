@@ -19,7 +19,7 @@ runs:
       shell: bash
       run: |
         echo "AWS_TEST_ACCOUNT=${{ inputs.afs25_account }}" >> $GITHUB_ENV
-#        echo "AWS_TEST_ENV=test-afs25" >> $GITHUB_ENV
+        echo "AWS_TEST_ENV=test-afs25" >> $GITHUB_ENV
   
     - if: ${{ github.actor == 'sophiemachin' }}
       name: Sets env vars for sem86

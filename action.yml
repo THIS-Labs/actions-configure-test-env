@@ -35,6 +35,14 @@ runs:
         echo "AWS_TEST_ACCOUNT=${{ inputs.amp205_account }}" >> $GITHUB_ENV
         echo "AWS_TEST_ENV=test-amp205" >> $GITHUB_ENV
 
+    - name: Abort workflow if actor unknown
+      shell: bash
+      run: |
+        if [ -z ${{ env.AWS_TEST_ENV }} ]; then
+          echo "Actor ${{ github.actor }} unknown. Aborting workflow"
+          exit 1
+        fi
+
     - name: Set additional env variables
       shell: bash
       run: |

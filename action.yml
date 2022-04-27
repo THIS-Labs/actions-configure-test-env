@@ -1,9 +1,6 @@
 name: 'Configure thiscovery test environment'
 description: 'Configures GitHub Action pipelines to use as test environment the AWS account of the developer who initiated the pipeline (actor)'
 inputs:
-  actor:
-    description: 'GitHub username of thiscovery developer'
-    required: true
   afs25_account:
     description: 'AWS account number for afs25'
     required: true
@@ -17,21 +14,21 @@ runs:
   using: "composite"
   steps:
     # Configure target test account based on actor
-    - if: ${{ inputs.actor == 'afs25' }}
+    - if: ${{ github.actor == 'afs25' }}
       name: Sets env vars for afs25
       shell: bash
       run: |
         echo "AWS_TEST_ACCOUNT=${{ inputs.afs25_account }}" >> $GITHUB_ENV
         echo "AWS_TEST_ENV=test-afs25" >> $GITHUB_ENV
   
-    - if: ${{ inputs.actor == 'sophiemachin' }}
+    - if: ${{ github.actor == 'sophiemachin' }}
       name: Sets env vars for sem86
       shell: bash
       run: |
         echo "AWS_TEST_ACCOUNT=${{ inputs.sem86_account }}" >> $GITHUB_ENV
         echo "AWS_TEST_ENV=test-sem86" >> $GITHUB_ENV
 
-    - if: ${{ inputs.actor == 'this-andy' }}
+    - if: ${{ github.actor == 'this-andy' }}
       name: Sets env vars for amp205
       shell: bash
       run: |
@@ -49,3 +46,4 @@ runs:
         echo "TESTING_ARTIFACTS_BUCKET=thiscovery-devops-${AWS_TEST_ENV}-deployment-artifacts" >> $GITHUB_ENV
         echo "CLOUDFORMATION_EXECUTION_ROLE=arn:aws:iam::${AWS_TEST_ACCOUNT}:role/thiscovery-devops-${AWS_TEST_ENV}-${AWS_REGION}-CFExec" >> $GITHUB_ENV
         echo "DEPLOYMENT_METHOD=github_actions" >> $GITHUB_ENV
+        echo "PACKAGED_TEMPLATE=${{ env.STACK_NAME }}-packaged-testing.yaml" >> $GITHUB_ENV

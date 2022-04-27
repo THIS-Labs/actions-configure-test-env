@@ -54,5 +54,5 @@ runs:
         echo "ARTIFACTS_BUCKET=thiscovery-devops-${AWS_TEST_ENV}-deployment-artifacts" >> $GITHUB_ENV
         echo "CLOUDFORMATION_EXECUTION_ROLE=arn:aws:iam::${AWS_TEST_ACCOUNT}:role/thiscovery-devops-${AWS_TEST_ENV}-${AWS_REGION}-CFExec" >> $GITHUB_ENV
         echo "DEPLOYMENT_METHOD=github_actions" >> $GITHUB_ENV
-        echo "PACKAGED_TEMPLATE=${{ env.STACK_NAME }}-packaged-testing.yaml" >> $GITHUB_ENV
+        echo "PACKAGED_TEMPLATE=${{ env.STACK_NAME }}-packaged-${{ env.AWS_TEST_ENV }}.yaml" >> $GITHUB_ENV
 

@@ -10,23 +10,27 @@ runs:
     # Configure target test account based on actor
     - if: ${{ inputs.actor == 'afs25' }}
       name: Sets env vars for afs25
+      shell: bash
       run: |
         echo "AWS_TEST_ACCOUNT=${{ secrets.AFS25_AWS_ACCOUNT }}" >> $GITHUB_ENV
         echo "AWS_TEST_ENV=test-afs25" >> $GITHUB_ENV
   
     - if: ${{ inputs.actor == 'sophiemachin' }}
       name: Sets env vars for sem86
+      shell: bash
       run: |
         echo "AWS_TEST_ACCOUNT=${{ secrets.SEM86_AWS_ACCOUNT }}" >> $GITHUB_ENV
         echo "AWS_TEST_ENV=test-sem86" >> $GITHUB_ENV
 
     - if: ${{ inputs.actor == 'this-andy' }}
       name: Sets env vars for amp205
+      shell: bash
       run: |
         echo "AWS_TEST_ACCOUNT=${{ secrets.AMP205_AWS_ACCOUNT }}" >> $GITHUB_ENV
         echo "AWS_TEST_ENV=test-amp205" >> $GITHUB_ENV
 
     - name: Set additional env variables
+      shell: bash
       run: |
         echo "SECRETS_NAMESPACE=/${AWS_TEST_ENV}/" >> $GITHUB_ENV
         echo "UNIT_TEST_NAMESPACE=/${AWS_TEST_ENV}/" >> $GITHUB_ENV
@@ -40,6 +44,7 @@ runs:
         echo "PROD_DEPLOYMENT_ROLE=arn:aws:iam::${{ secrets.PROD_AWS_ACCOUNT }}:role/thiscovery-devops-prod-${AWS_REGION}-PipelineExec" >> $GITHUB_ENV
 
     - name: DEBUG STEP - check that test environment is set correctly
+      shell: bash
       run: |
         echo "Aws test account: ${AWS_TEST_ACCOUNT}"
         echo "Aws test env: ${AWS_TEST_ENV}"

@@ -27,6 +27,7 @@ runs:
       run: |
         echo "AWS_TEST_ACCOUNT=${{ inputs.sem86_account }}" >> $GITHUB_ENV
         echo "AWS_TEST_ENV=test-sem86" >> $GITHUB_ENV
+        echo "SECURITY_GROUP_ID=${{ secrets.SEM86_SECURITY_GROUP_ID }}" >> $GITHUB_ENV
 
     - if: ${{ github.actor == 'this-andy' }}
       name: Sets env vars for amp205

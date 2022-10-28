@@ -10,6 +10,15 @@ inputs:
   amp205_account:
     description: 'AWS account number for amp205'
     required: true
+  afs25_sg_account:
+    description: 'AWS security group account id for afs25'
+    required: true
+  sem86_sg_account:
+    description: 'AWS security group account id for sem86'
+    required: true
+  amp205_sg_account:
+    description: 'AWS security group account id for amp205'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -27,7 +36,7 @@ runs:
       run: |
         echo "AWS_TEST_ACCOUNT=${{ inputs.sem86_account }}" >> $GITHUB_ENV
         echo "AWS_TEST_ENV=test-sem86" >> $GITHUB_ENV
-        echo "SECURITY_GROUP_ID=${{ secrets.SEM86_SECURITY_GROUP_ID }}" >> $GITHUB_ENV
+        echo "SECURITY_GROUP_ID=${{ inputs.SEM86_SECURITY_GROUP_ID }}" >> $GITHUB_ENV
 
     - if: ${{ github.actor == 'this-andy' }}
       name: Sets env vars for amp205

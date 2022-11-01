@@ -37,6 +37,7 @@ runs:
         echo "AWS_TEST_ACCOUNT=${{ inputs.sem86_account }}" >> $GITHUB_ENV
         echo "AWS_TEST_ENV=test-sem86" >> $GITHUB_ENV
         echo "SECURITY_GROUP_ID=${{ inputs.sem86_sg_account }}" >> $GITHUB_ENV
+        echo "TEST_SLACK_BOT_TOKEN=${{ inputs.sem86_slack_bot_token }}" >> $GITHUB_ENV
 
     - if: ${{ github.actor == 'this-andy' }}
       name: Sets env vars for amp205
@@ -44,6 +45,8 @@ runs:
       run: |
         echo "AWS_TEST_ACCOUNT=${{ inputs.amp205_account }}" >> $GITHUB_ENV
         echo "AWS_TEST_ENV=test-amp205" >> $GITHUB_ENV
+        echo "SECURITY_GROUP_ID=${{ inputs.amp205_sg_account }}" >> $GITHUB_ENV
+        echo "TEST_SLACK_BOT_TOKEN=${{ inputs.amp205_slack_bot_token }}" >> $GITHUB_ENV
 
     - if: ${{ github.actor == 'alistairclark' }}
       name: Sets env vars for afs25
@@ -51,6 +54,8 @@ runs:
       run: |
         echo "AWS_TEST_ACCOUNT=${{ inputs.afs25_account }}" >> $GITHUB_ENV
         echo "AWS_TEST_ENV=test-afs25" >> $GITHUB_ENV
+        echo "SECURITY_GROUP_ID=${{ inputs.afs25_sg_account }}" >> $GITHUB_ENV
+        echo "TEST_SLACK_BOT_TOKEN=${{ inputs.afs25_slack_bot_token }}" >> $GITHUB_ENV
   
     - name: Abort workflow if actor unknown
       shell: bash

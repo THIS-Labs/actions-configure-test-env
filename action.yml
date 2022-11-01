@@ -19,6 +19,15 @@ inputs:
   amp205_sg_account:
     description: 'AWS security group account id for amp205'
     required: true
+  sem86_slack_bot_token:
+    description: 'Slack app slackbot token for sem86'
+    required: false
+  afs25_slack_bot_token:
+    description: 'Slack app slackbot token for afs25'
+    required: false
+  amp205_slack_bot_token:
+    description: 'Slack app slackbot token for amp205'
+    required: false
 runs:
   using: "composite"
   steps:

@@ -28,6 +28,15 @@ inputs:
   amp205_slack_bot_token:
     description: 'Slack app slackbot token for amp205'
     required: false
+  sem86_test_email:
+    description: 'Test email for sem86'
+    required: false
+  afs25_test_email:
+    description: 'Test email for afs25'
+    required: false
+  amp205_test_email:
+    description: 'Test email for amp206'
+    required: false
 runs:
   using: "composite"
   steps:
@@ -47,6 +56,7 @@ runs:
         echo "AWS_TEST_ENV=test-sem86" >> $GITHUB_ENV
         echo "SECURITY_GROUP_ID=${{ inputs.sem86_sg_account }}" >> $GITHUB_ENV
         echo "TEST_SLACK_BOT_TOKEN=${{ inputs.sem86_slack_bot_token }}" >> $GITHUB_ENV
+        echo "TESTER_EMAIL=${{ inputs.sem86_test_email }}" >> $GITHUB_ENV
 
     - if: ${{ github.actor == 'this-andy' }}
       name: Sets env vars for amp205
@@ -56,6 +66,7 @@ runs:
         echo "AWS_TEST_ENV=test-amp205" >> $GITHUB_ENV
         echo "SECURITY_GROUP_ID=${{ inputs.amp205_sg_account }}" >> $GITHUB_ENV
         echo "TEST_SLACK_BOT_TOKEN=${{ inputs.amp205_slack_bot_token }}" >> $GITHUB_ENV
+        echo "TESTER_EMAIL=${{ inputs.amp205_test_email }}" >> $GITHUB_ENV
 
     - if: ${{ github.actor == 'alistairclark' }}
       name: Sets env vars for afs25
@@ -65,7 +76,8 @@ runs:
         echo "AWS_TEST_ENV=test-afs25" >> $GITHUB_ENV
         echo "SECURITY_GROUP_ID=${{ inputs.afs25_sg_account }}" >> $GITHUB_ENV
         echo "TEST_SLACK_BOT_TOKEN=${{ inputs.afs25_slack_bot_token }}" >> $GITHUB_ENV
-  
+        echo "TESTER_EMAIL=${{ inputs.afs25_test_email }}" >> $GITHUB_ENV
+
     - name: Abort workflow if actor unknown
       shell: bash
       run: |

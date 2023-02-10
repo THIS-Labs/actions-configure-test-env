@@ -98,4 +98,5 @@ runs:
         echo "CLOUDFORMATION_EXECUTION_ROLE=arn:aws:iam::${AWS_TEST_ACCOUNT}:role/thiscovery-devops-${AWS_TEST_ENV}-${AWS_REGION}-CFExec" >> $GITHUB_ENV
         echo "DEPLOYMENT_METHOD=github_actions" >> $GITHUB_ENV
         echo "PACKAGED_TEMPLATE=${{ env.STACK_NAME }}-packaged-${{ env.AWS_TEST_ENV }}.yaml" >> $GITHUB_ENV
+        echo "TEST_CALENDAR_EMAIL=${{ inputs.test_calendar_email }}" >> $GITHUB_ENV
 

@@ -37,6 +37,9 @@ inputs:
   amp205_test_email:
     description: 'Test email for amp206'
     required: false
+  test_calendar_email:
+    description: 'Test calender email for acuity'
+    required: false
 runs:
   using: "composite"
   steps:

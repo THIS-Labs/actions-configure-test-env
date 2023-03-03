@@ -40,6 +40,12 @@ inputs:
   test_calendar_email:
     description: 'Test calender email for acuity'
     required: false
+  on_demand_file_url:
+    description: 'AWS S3 bucket URL'
+    required: false
+  live_file_url:
+    description: 'AWS S3 bucket URL'
+    required: false
 runs:
   using: "composite"
   steps:
@@ -102,4 +108,6 @@ runs:
         echo "DEPLOYMENT_METHOD=github_actions" >> $GITHUB_ENV
         echo "PACKAGED_TEMPLATE=${{ env.STACK_NAME }}-packaged-${{ env.AWS_TEST_ENV }}.yaml" >> $GITHUB_ENV
         echo "TEST_CALENDAR_EMAIL=${{ inputs.test_calendar_email }}" >> $GITHUB_ENV
+        echo "ON_DEMAND_INTERVIEW_FILE_URL=${{ inputs.on_demand_file_url }}" >> $GITHUB_ENV
+        echo "LIVE_INTERVIEW_FILE_URL=${{ inputs.live_file_url }}" >> $GITHUB_ENV
 

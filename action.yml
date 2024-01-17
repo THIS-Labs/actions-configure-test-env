@@ -52,7 +52,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    # Configure target test account based on actor
+    # Configure target test account based on actor, using actor2account_map
     - if: ${{ fromJson(inputs.actor2account_map)[github.actor] == 'afs25' }}
       name: Sets env vars for afs25 AWS account
       shell: bash

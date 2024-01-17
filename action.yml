@@ -53,7 +53,7 @@ runs:
   using: "composite"
   steps:
     # Configure target test account based on actor
-    - if: ${{ fromJson(${{ inputs.actor2account_map }})[github.actor] == 'afs25' }}
+    - if: ${{ fromJson(inputs.actor2account_map)[github.actor] == 'afs25' }}
       name: Sets env vars for afs25 AWS account
       shell: bash
       run: |
@@ -63,7 +63,7 @@ runs:
         echo "TEST_SLACK_BOT_TOKEN=${{ inputs.afs25_slack_bot_token }}" >> $GITHUB_ENV
         echo "TESTER_EMAIL=${{ inputs.afs25_test_email }}" >> $GITHUB_ENV
   
-    - if: ${{ fromJson(${{ inputs.actor2account_map }})[github.actor] == 'sem86' }}
+    - if: ${{ fromJson(inputs.actor2account_map)[github.actor] == 'sem86' }}
       name: Sets env vars for sem86 AWS account
       shell: bash
       run: |
@@ -73,7 +73,7 @@ runs:
         echo "TEST_SLACK_BOT_TOKEN=${{ inputs.sem86_slack_bot_token }}" >> $GITHUB_ENV
         echo "TESTER_EMAIL=${{ inputs.sem86_test_email }}" >> $GITHUB_ENV
 
-    - if: ${{ fromJson(${{ inputs.actor2account_map }})[github.actor] == 'amp205' }}
+    - if: ${{ fromJson(inputs.actor2account_map)[github.actor] == 'amp205' }}
       name: Sets env vars for amp205 AWS account
       shell: bash
       run: |

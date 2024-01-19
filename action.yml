@@ -1,6 +1,9 @@
 name: 'Configure thiscovery test environment'
 description: 'Configures GitHub Action pipelines to use as test environment the AWS account of the developer who initiated the pipeline (actor)'
 inputs:
+  actor2account_map:
+    description: 'JSON string mapping GitHub actors to AWS accounts'
+    required: true
   afs25_account:
     description: 'AWS account number for afs25'
     required: true
@@ -49,9 +52,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    # Configure target test account based on actor
-    - if: ${{ github.actor == 'afs25' }}
-      name: Sets env vars for afs25
+    # Configure target test account based on actor, using actor2account_map
+    - if: ${{ fromJson(inputs.actor2account_map)[github.actor] == 'afs25' }}
+      name: Sets env vars for afs25 AWS account
       shell: bash
       run: |
         echo "AWS_TEST_ACCOUNT=${{ inputs.afs25_account }}" >> $GITHUB_ENV
@@ -60,8 +63,8 @@ runs:
         echo "TEST_SLACK_BOT_TOKEN=${{ inputs.afs25_slack_bot_token }}" >> $GITHUB_ENV
         echo "TESTER_EMAIL=${{ inputs.afs25_test_email }}" >> $GITHUB_ENV
   
-    - if: ${{ github.actor == 'sophiemachin' }}
-      name: Sets env vars for sem86
+    - if: ${{ fromJson(inputs.actor2account_map)[github.actor] == 'sem86' }}
+      name: Sets env vars for sem86 AWS account
       shell: bash
       run: |
         echo "AWS_TEST_ACCOUNT=${{ inputs.sem86_account }}" >> $GITHUB_ENV
@@ -70,8 +73,8 @@ runs:
         echo "TEST_SLACK_BOT_TOKEN=${{ inputs.sem86_slack_bot_token }}" >> $GITHUB_ENV
         echo "TESTER_EMAIL=${{ inputs.sem86_test_email }}" >> $GITHUB_ENV
 
-    - if: ${{ github.actor == 'this-andy' }}
-      name: Sets env vars for amp205
+    - if: ${{ fromJson(inputs.actor2account_map)[github.actor] == 'amp205' }}
+      name: Sets env vars for amp205 AWS account
       shell: bash
       run: |
         echo "AWS_TEST_ACCOUNT=${{ inputs.amp205_account }}" >> $GITHUB_ENV
@@ -79,16 +82,6 @@ runs:
         echo "SECURITY_GROUP_ID=${{ inputs.amp205_sg_account }}" >> $GITHUB_ENV
         echo "TEST_SLACK_BOT_TOKEN=${{ inputs.amp205_slack_bot_token }}" >> $GITHUB_ENV
         echo "TESTER_EMAIL=${{ inputs.amp205_test_email }}" >> $GITHUB_ENV
-
-    - if: ${{ github.actor == 'alistairclark' }}
-      name: Sets env vars for afs25
-      shell: bash
-      run: |
-        echo "AWS_TEST_ACCOUNT=${{ inputs.afs25_account }}" >> $GITHUB_ENV
-        echo "AWS_TEST_ENV=test-afs25" >> $GITHUB_ENV
-        echo "SECURITY_GROUP_ID=${{ inputs.afs25_sg_account }}" >> $GITHUB_ENV
-        echo "TEST_SLACK_BOT_TOKEN=${{ inputs.afs25_slack_bot_token }}" >> $GITHUB_ENV
-        echo "TESTER_EMAIL=${{ inputs.afs25_test_email }}" >> $GITHUB_ENV
 
     - name: Abort workflow if actor unknown
       shell: bash

@@ -13,6 +13,10 @@ inputs:
   amp205_account:
     description: 'AWS account number for amp205'
     required: true
+  jdl79_account:
+    description: 'AWS account number for jdl79'
+    required: true
+
   afs25_sg_account:
     description: 'AWS security group account id for afs25'
     required: true
@@ -22,6 +26,10 @@ inputs:
   amp205_sg_account:
     description: 'AWS security group account id for amp205'
     required: true
+  jdl79_sg_account:
+    description: 'AWS security group account id for jdl79'
+    required: true
+
   sem86_slack_bot_token:
     description: 'Slack app slackbot token for sem86'
     required: false
@@ -82,6 +90,15 @@ runs:
         echo "SECURITY_GROUP_ID=${{ inputs.amp205_sg_account }}" >> $GITHUB_ENV
         echo "TEST_SLACK_BOT_TOKEN=${{ inputs.amp205_slack_bot_token }}" >> $GITHUB_ENV
         echo "TESTER_EMAIL=${{ inputs.amp205_test_email }}" >> $GITHUB_ENV
+    - if: ${{ fromJson(inputs.actor2account_map)[github.actor] == 'jdl79' }}
+      name: Sets env vars for jdl79 AWS account
+      shell: bash
+      run: |
+        echo "AWS_TEST_ACCOUNT=${{ inputs.jdl79_account }}" >> $GITHUB_ENV
+        echo "AWS_TEST_ENV=test-jdl79" >> $GITHUB_ENV
+        echo "SECURITY_GROUP_ID=${{ inputs.jdl79_sg_account }}" >> $GITHUB_ENV
+        echo "TEST_SLACK_BOT_TOKEN=${{ inputs.jdl79_slack_bot_token }}" >> $GITHUB_ENV
+        echo "TESTER_EMAIL=${{ inputs.jdl79_test_email }}" >> $GITHUB_ENV
 
     - name: Abort workflow if actor unknown
       shell: bash

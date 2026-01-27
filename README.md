@@ -2,6 +2,8 @@
 Composite GitHub action to configure testing environment in CI/CD pipelines
 
 ## Configuration of testing account
+
+### Versions 0.x
 The AWS account used for testing depends on who triggered a workflow
 run (in other words, the GitHub actor).
 
@@ -34,3 +36,12 @@ Typical usage of version >0.17.1 therefore looks like this:
       amp205_account: ${{ secrets.AMP205_AWS_ACCOUNT }}
       actor2account_map: ${{ vars.ACTOR2ACCOUNT_MAP }}
 ```
+
+### Versions 1.x
+Versions 0.x of this composite action expected the calling action to provide many inputs, 
+with variants for each GitHub actor (for example, `afs25_sg_account` and `sem86_sg_account`)
+for the security groups in those accounts.
+
+From version 1.0, parameters are stored in a JSON variable actor2env_map, which is
+passed in as a single input. Variable values for each account are unpacked and read from
+that JSON object. This should provide flexibility to this action.

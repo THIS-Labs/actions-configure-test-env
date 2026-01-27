@@ -1,104 +1,20 @@
 name: 'Configure thiscovery test environment'
 description: 'Configures GitHub Action pipelines to use as test environment the AWS account of the developer who initiated the pipeline (actor)'
 inputs:
-  actor2account_map:
-    description: 'JSON string mapping GitHub actors to AWS accounts'
-    required: true
-  afs25_account:
-    description: 'AWS account number for afs25'
-    required: true
-  sem86_account:
-    description: 'AWS account number for sem86'
-    required: true
-  amp205_account:
-    description: 'AWS account number for amp205'
-    required: true
-  jdl79_account:
-    description: 'AWS account number for jdl79'
+  actor2env_map:
+    description: 'JSON string mapping GitHub actors to AWS account parameters'
     required: true
 
-  afs25_sg_account:
-    description: 'AWS security group account id for afs25'
-    required: true
-  sem86_sg_account:
-    description: 'AWS security group account id for sem86'
-    required: true
-  amp205_sg_account:
-    description: 'AWS security group account id for amp205'
-    required: true
-  jdl79_sg_account:
-    description: 'AWS security group account id for jdl79'
-    required: true
-
-  sem86_slack_bot_token:
-    description: 'Slack app slackbot token for sem86'
-    required: false
-  afs25_slack_bot_token:
-    description: 'Slack app slackbot token for afs25'
-    required: false
-  amp205_slack_bot_token:
-    description: 'Slack app slackbot token for amp205'
-    required: false
-  sem86_test_email:
-    description: 'Test email for sem86'
-    required: false
-  afs25_test_email:
-    description: 'Test email for afs25'
-    required: false
-  amp205_test_email:
-    description: 'Test email for amp206'
-    required: false
-  test_calendar_email:
-    description: 'Test calender email for acuity'
-    required: false
-  on_demand_file_url:
-    description: 'AWS S3 bucket URL'
-    required: false
-  live_file_url:
-    description: 'AWS S3 bucket URL'
-    required: false
 runs:
   using: "composite"
   steps:
-    # Configure target test account based on actor, using actor2account_map
-    - if: ${{ fromJson(inputs.actor2account_map)[github.actor] == 'afs25' }}
-      name: Sets env vars for afs25 AWS account
+    # Configure target test account based on actor, using actor2env_map
+    - name: Resolve actor config and set environment variables for AWS account
       shell: bash
       run: |
-        echo "AWS_TEST_ACCOUNT=${{ inputs.afs25_account }}" >> $GITHUB_ENV
-        echo "AWS_TEST_ENV=test-afs25" >> $GITHUB_ENV
-        echo "SECURITY_GROUP_ID=${{ inputs.afs25_sg_account }}" >> $GITHUB_ENV
-        echo "TEST_SLACK_BOT_TOKEN=${{ inputs.afs25_slack_bot_token }}" >> $GITHUB_ENV
-        echo "TESTER_EMAIL=${{ inputs.afs25_test_email }}" >> $GITHUB_ENV
-  
-    - if: ${{ fromJson(inputs.actor2account_map)[github.actor] == 'sem86' }}
-      name: Sets env vars for sem86 AWS account
-      shell: bash
-      run: |
-        echo "AWS_TEST_ACCOUNT=${{ inputs.sem86_account }}" >> $GITHUB_ENV
-        echo "AWS_TEST_ENV=test-sem86" >> $GITHUB_ENV
-        echo "SECURITY_GROUP_ID=${{ inputs.sem86_sg_account }}" >> $GITHUB_ENV
-        echo "TEST_SLACK_BOT_TOKEN=${{ inputs.sem86_slack_bot_token }}" >> $GITHUB_ENV
-        echo "TESTER_EMAIL=${{ inputs.sem86_test_email }}" >> $GITHUB_ENV
-
-    - if: ${{ fromJson(inputs.actor2account_map)[github.actor] == 'amp205' }}
-      name: Sets env vars for amp205 AWS account
-      shell: bash
-      run: |
-        echo "AWS_TEST_ACCOUNT=${{ inputs.amp205_account }}" >> $GITHUB_ENV
-        echo "AWS_TEST_ENV=test-amp205" >> $GITHUB_ENV
-        echo "SECURITY_GROUP_ID=${{ inputs.amp205_sg_account }}" >> $GITHUB_ENV
-        echo "TEST_SLACK_BOT_TOKEN=${{ inputs.amp205_slack_bot_token }}" >> $GITHUB_ENV
-        echo "TESTER_EMAIL=${{ inputs.amp205_test_email }}" >> $GITHUB_ENV
-    - if: ${{ fromJson(inputs.actor2account_map)[github.actor] == 'jdl79' }}
-      name: Sets env vars for jdl79 AWS account
-      shell: bash
-      run: |
-        echo "AWS_TEST_ACCOUNT=${{ inputs.jdl79_account }}" >> $GITHUB_ENV
-        echo "AWS_TEST_ENV=test-jdl79" >> $GITHUB_ENV
-        echo "SECURITY_GROUP_ID=${{ inputs.jdl79_sg_account }}" >> $GITHUB_ENV
-        echo "TEST_SLACK_BOT_TOKEN=${{ inputs.jdl79_slack_bot_token }}" >> $GITHUB_ENV
-        echo "TESTER_EMAIL=${{ inputs.jdl79_test_email }}" >> $GITHUB_ENV
+        echo "AWS_TEST_ACCOUNT=${{ fromJson(inputs.actor2env_map)[github.actor]['account_number']}}" >> $GITHUB_ENV
+        echo "AWS_TEST_ENV=${{ fromJson(inputs.actor2env_map)[github.actor]['test_environment']}}" >> $GITHUB_ENV
+        echo "THISCOVERY_EVENT_BUS_NAME=${{ fromJson(inputs.actor2env_map)[github.actor]['thiscovery-event-bus']}}" >> $GITHUB_ENV
 
     - name: Abort workflow if actor unknown
       shell: bash
@@ -120,7 +36,4 @@ runs:
         echo "CLOUDFORMATION_EXECUTION_ROLE=arn:aws:iam::${AWS_TEST_ACCOUNT}:role/thiscovery-devops-${AWS_TEST_ENV}-${AWS_REGION}-CFExec" >> $GITHUB_ENV
         echo "DEPLOYMENT_METHOD=github_actions" >> $GITHUB_ENV
         echo "PACKAGED_TEMPLATE=${{ env.STACK_NAME }}-packaged-${{ env.AWS_TEST_ENV }}.yaml" >> $GITHUB_ENV
-        echo "TEST_CALENDAR_EMAIL=${{ inputs.test_calendar_email }}" >> $GITHUB_ENV
-        echo "ON_DEMAND_INTERVIEW_FILE_URL=${{ inputs.on_demand_file_url }}" >> $GITHUB_ENV
-        echo "LIVE_INTERVIEW_FILE_URL=${{ inputs.live_file_url }}" >> $GITHUB_ENV
 
